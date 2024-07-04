@@ -25,7 +25,7 @@ public class OrderController {
     public ResponseEntity<Void> correctOrder(@RequestBody OrderDTO order) {
 
         if (checkIfOrderContainProductWithIDToIncorrectOrder(order.getOrderLines())) {
-            throw new MissingProductException(createMissingProducts());
+            throw new MissingProductException("Missing some of ordered products", createMissingProducts());
         }
 
         return new ResponseEntity<>(HttpStatus.OK);

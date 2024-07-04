@@ -7,10 +7,12 @@ import java.util.List;
 
 @Getter
 public class MissingProductException  extends ApplicationException{
-    private final List<MissingProductDTO> missingProductList;
+    private final List<MissingProductDTO> MISSING_PRODUCTS;
+    private final String MESSAGE;
 
-    public MissingProductException(List<MissingProductDTO> missingProductList) {
-        this.missingProductList = missingProductList;
+    public MissingProductException(String message, List<MissingProductDTO> missingProductList) {
+        this.MESSAGE = message;
+        this.MISSING_PRODUCTS = missingProductList;
     }
 
 }

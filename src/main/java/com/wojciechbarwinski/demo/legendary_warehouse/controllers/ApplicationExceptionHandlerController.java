@@ -20,6 +20,6 @@ public class ApplicationExceptionHandlerController {
     @ExceptionHandler(MissingProductException.class)
     public ErrorResponse<List<MissingProductDTO>> missingProductException(MissingProductException exception){
 
-        return new ErrorResponse<>(422, "Missing products", exception.getMissingProductList());
+        return new ErrorResponse<>(exception.getMESSAGE(), exception.getMISSING_PRODUCTS());
     }
 }
