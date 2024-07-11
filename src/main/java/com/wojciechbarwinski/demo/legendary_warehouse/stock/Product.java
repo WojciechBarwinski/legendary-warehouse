@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
-class Product {
+public class Product {
 
     private String id;
     private String name;
