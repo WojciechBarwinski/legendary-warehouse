@@ -1,10 +1,10 @@
 package com.wojciechbarwinski.demo.legendary_warehouse.controllers;
 
 
-import com.wojciechbarwinski.demo.legendary_warehouse.dtos.MissingProductDTO;
+import com.wojciechbarwinski.demo.legendary_warehouse.dtos.InsufficientProductDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.dtos.OrderDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.dtos.OrderLineDTO;
-import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.MissingProductException;
+import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.InsufficientStockException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +25,7 @@ public class OrderController {
     public ResponseEntity<Void> correctOrder(@RequestBody OrderDTO order) {
 
         if (checkIfOrderContainProductWithIDToIncorrectOrder(order.getOrderLines())) {
-            throw new MissingProductException("Missing some of ordered products", createMissingProducts());
+            throw new InsufficientStockException("Missing some of ordered products", createMissingProducts());
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -37,9 +37,9 @@ public class OrderController {
                 .anyMatch(orderLineDTO -> orderLineDTO.productID().equals(INCORRECT_PRODUCT_ID));
     }
 
-    private List<MissingProductDTO> createMissingProducts() {
-        List<MissingProductDTO> missingProductDTOList = new ArrayList<>();
-        missingProductDTOList.add(new MissingProductDTO(INCORRECT_PRODUCT_ID, 3, 1));
-        return missingProductDTOList;
+    private List<InsufficientProductDTO> createMissingProducts() {
+        List<InsufficientProductDTO> insufficientProductDTOList = new ArrayList<>();
+        insufficientProductDTOList.add(new InsufficientProductDTO(INCORRECT_PRODUCT_ID, 3, 1));
+        return insufficientProductDTOList;
     }
 }

@@ -1,8 +1,9 @@
 package com.wojciechbarwinski.demo.legendary_warehouse.controllers;
 
-import com.wojciechbarwinski.demo.legendary_warehouse.dtos.MissingProductDTO;
+import com.wojciechbarwinski.demo.legendary_warehouse.dtos.InsufficientProductDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.ErrorResponse;
-import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.MissingProductException;
+import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.InsufficientStockException;
+import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,8 +18,15 @@ public class ApplicationExceptionHandlerController {
 
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) // 422
-    @ExceptionHandler(MissingProductException.class)
-    public ErrorResponse<List<MissingProductDTO>> missingProductException(MissingProductException exception){
+    @ExceptionHandler(InsufficientStockException.class)
+    public ErrorResponse<List<InsufficientProductDTO>> insufficientStockException(InsufficientStockException exception) {
+
+        return new ErrorResponse<>(exception.getMessage(), exception.getInsufficientStock());
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) // 422
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ErrorResponse<List<String>> insufficientStockException(ProductNotFoundException exception) {
 
         return new ErrorResponse<>(exception.getMessage(), exception.getMissingProducts());
     }

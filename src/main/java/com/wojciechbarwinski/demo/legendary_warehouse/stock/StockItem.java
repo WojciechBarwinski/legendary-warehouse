@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-class StockItem {
+public class StockItem {
 
     private Product product;
     private int quantity;
