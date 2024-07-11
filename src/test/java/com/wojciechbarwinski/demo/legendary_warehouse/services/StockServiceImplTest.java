@@ -29,7 +29,7 @@ class StockServiceImplTest {
     private StockServiceImpl stockService;
 
     @Test
-    void checkProductAvailabilityWhenProductIdIsIncorrect() {
+    void shouldThrowExceptionWhenProductDoesNotExist() {
         String wrongId1 = "111";
         String wrongId2 = "222";
         int unimportantQuantity = 5;
@@ -50,27 +50,27 @@ class StockServiceImplTest {
     }
 
     @Test
-    void checkInsufficientStock() {
+    void shouldThrowExceptionWhenQuantityInOrderIsBiggerThenQuantityInStock() {
         int expectedErrorListSize = 2;
-        int wrongQuantity1 = 15;
-        int wrongQuantity2 = 20;
-        String correctId1 = "001B";
-        String correctId2 = "002B";
+        int orderQuantity1  = 15;
+        int orderQuantity2 = 20;
+        String productId1 = "001B";
+        String productId2 = "002B";
         List<OrderLineDTO> orderLineDTOS = new ArrayList<>();
-        orderLineDTOS.add(new OrderLineDTO(correctId1, wrongQuantity1));
-        orderLineDTOS.add(new OrderLineDTO(correctId2, wrongQuantity2));
+        orderLineDTOS.add(new OrderLineDTO(productId1, orderQuantity1 ));
+        orderLineDTOS.add(new OrderLineDTO(productId2, orderQuantity2));
         OrderDTO order = new OrderDTO();
         order.setOrderLines(orderLineDTOS);
 
-        StockItem stockItem1 = new StockItem(new Product(correctId1, "name1"), 10);
-        StockItem stockItem2 = new StockItem(new Product(correctId1, "name2"), 10);
-        when(stockRepository.findById(correctId1)).thenReturn(Optional.of(stockItem1));
-        when(stockRepository.findById(correctId2)).thenReturn(Optional.of(stockItem2));
+        StockItem stockItem1 = new StockItem(new Product(productId1, "name1"), 10);
+        StockItem stockItem2 = new StockItem(new Product(productId2, "name2"), 10);
+        when(stockRepository.findById(productId1)).thenReturn(Optional.of(stockItem1));
+        when(stockRepository.findById(productId2)).thenReturn(Optional.of(stockItem2));
 
         InsufficientStockException exception = assertThrows(InsufficientStockException.class, () -> stockService.stockCheck(order));
 
         assertEquals("There is insufficient stock for some ordered products in our warehouse.", exception.getMessage());
         assertEquals(exception.getInsufficientStock().size(), expectedErrorListSize);
-        assertEquals(exception.getInsufficientStock().get(0).productId(), correctId1);
+        assertEquals(exception.getInsufficientStock().get(0).productId(), productId1);
     }
 }

@@ -1,6 +1,6 @@
 package com.wojciechbarwinski.demo.legendary_warehouse.services;
 
-import com.wojciechbarwinski.demo.legendary_warehouse.dtos.InsufficientProductDTO;
+import com.wojciechbarwinski.demo.legendary_warehouse.dtos.InsufficientStockDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.dtos.OrderDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.dtos.OrderLineDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.InsufficientStockException;
@@ -44,17 +44,17 @@ public class StockServiceImpl implements StockService {
     }
 
     private void checkSufficientStock(OrderDTO order) {
-        List<InsufficientProductDTO> insufficientProductList = new ArrayList<>();
+        List<InsufficientStockDTO> insufficientStockList = new ArrayList<>();
 
         for (OrderLineDTO orderLine : order.getOrderLines()) {
             Optional<StockItem> itemFromStock = stockRepository.findById(orderLine.productID());
             if (itemFromStock.isPresent() && itemFromStock.get().getQuantity() < orderLine.quantity()) {
-                insufficientProductList.add(new InsufficientProductDTO(orderLine.productID(), orderLine.quantity(), itemFromStock.get().getQuantity()));
+                insufficientStockList.add(new InsufficientStockDTO(orderLine.productID(), orderLine.quantity(), itemFromStock.get().getQuantity()));
             }
         }
 
-        if (!insufficientProductList.isEmpty()) {
-            throw new InsufficientStockException("There is insufficient stock for some ordered products in our warehouse.", insufficientProductList);
+        if (!insufficientStockList.isEmpty()) {
+            throw new InsufficientStockException("There is insufficient stock for some ordered products in our warehouse.", insufficientStockList);
         }
     }
 }

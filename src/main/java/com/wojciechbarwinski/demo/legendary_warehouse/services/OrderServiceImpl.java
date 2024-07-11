@@ -22,6 +22,12 @@ public class OrderServiceImpl implements OrderService {
 
         stockService.stockCheck(order);
 
+        removeQuantityOfItemsFromStock(order); // I think that there should be same kind of synchronized
+
+        //There should be same kind of return value that confirm that order is accepted
+    }
+
+    private void removeQuantityOfItemsFromStock(OrderDTO order) {
         for (OrderLineDTO orderLine : order.getOrderLines()) {
             StockItem stockItem = stockRepository.findById(orderLine.productID()).get();
 

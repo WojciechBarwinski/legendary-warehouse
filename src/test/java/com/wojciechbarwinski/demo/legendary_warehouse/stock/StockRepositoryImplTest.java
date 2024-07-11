@@ -15,17 +15,17 @@ class StockRepositoryImplTest {
     private StockRepository stockRepository;
 
     @Test
-    public void checkIfStartingDataAreInDataBase() {
+    public void shouldCheckIfStartingDataAreInDataBase() {
         String existingItemId = "010M";
 
-        Optional<StockItem> existingItem = stockRepository.findById(existingItemId);
+        Optional<StockItem> itemFromDB = stockRepository.findById(existingItemId);
 
-        Assertions.assertTrue(existingItem.isPresent());
-        Assertions.assertEquals(existingItemId, existingItem.get().getProduct().getId());
+        Assertions.assertTrue(itemFromDB.isPresent());
+        Assertions.assertEquals(existingItemId, itemFromDB.get().getProduct().getId());
     }
 
     @Test
-    public void checkFindByIdWithCorrectAndIncorrectId() {
+    public void shouldFindByIdWithCorrectAndIncorrectId() {
         String existingItemId = "010M";
         String nonExistingItemId = "99999";
 
@@ -39,7 +39,7 @@ class StockRepositoryImplTest {
 
 
     @Test
-    public void checkThatOrderedAmountOfProductAreRemoveFromDataBase(){
+    public void shouldSaveStockItemByIdWithDifferentQuantity(){
         int newQuantity = 3;
         String orderedProductId = "001B";
         StockItem itemToSave = new StockItem(new Product(orderedProductId, "Gloomheaven"), newQuantity);

@@ -1,6 +1,6 @@
 package com.wojciechbarwinski.demo.legendary_warehouse.controllers;
 
-import com.wojciechbarwinski.demo.legendary_warehouse.dtos.InsufficientProductDTO;
+import com.wojciechbarwinski.demo.legendary_warehouse.dtos.InsufficientStockDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.ErrorResponse;
 import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.InsufficientStockException;
 import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.ProductNotFoundException;
@@ -19,14 +19,14 @@ public class ApplicationExceptionHandlerController {
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) // 422
     @ExceptionHandler(InsufficientStockException.class)
-    public ErrorResponse<List<InsufficientProductDTO>> insufficientStockException(InsufficientStockException exception) {
+    public ErrorResponse<List<InsufficientStockDTO>> insufficientStockException(InsufficientStockException exception) {
 
         return new ErrorResponse<>(exception.getMessage(), exception.getInsufficientStock());
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) // 422
     @ExceptionHandler(ProductNotFoundException.class)
-    public ErrorResponse<List<String>> insufficientStockException(ProductNotFoundException exception) {
+    public ErrorResponse<List<String>> productNotFoundException(ProductNotFoundException exception) {
 
         return new ErrorResponse<>(exception.getMessage(), exception.getMissingProducts());
     }
