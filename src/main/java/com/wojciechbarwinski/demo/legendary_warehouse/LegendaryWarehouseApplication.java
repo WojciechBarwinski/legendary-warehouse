@@ -8,8 +8,6 @@ public class LegendaryWarehouseApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LegendaryWarehouseApplication.class, args);
-
-		System.out.println("Hello World");
 	}
 
 }
