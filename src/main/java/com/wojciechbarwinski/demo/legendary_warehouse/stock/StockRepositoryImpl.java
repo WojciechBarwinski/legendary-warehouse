@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
@@ -17,7 +17,7 @@ public class StockRepositoryImpl implements StockRepository {
     private Map<String, StockItem> productsMap;
 
     private StockRepositoryImpl() {
-        productsMap = new HashMap<>();
+        productsMap = new ConcurrentHashMap<>();
         addProductsOnStart();
     }
 
