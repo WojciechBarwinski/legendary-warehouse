@@ -11,8 +11,8 @@ public class ProductNotFoundException extends ApplicationException {
     private final List<String> missingProducts;
     private final String message;
 
-    public ProductNotFoundException(String message, List<String> missingProductList) {
-        this.message = message;
+    public ProductNotFoundException(List<String> missingProductList) {
+        this.message = "Some of the ordered products are not available in our database.";
         this.missingProducts = missingProductList;
     }
 }

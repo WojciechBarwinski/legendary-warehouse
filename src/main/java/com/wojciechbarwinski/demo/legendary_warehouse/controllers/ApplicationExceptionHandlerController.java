@@ -21,7 +21,7 @@ public class ApplicationExceptionHandlerController {
     @ExceptionHandler(InsufficientStockException.class)
     public ErrorResponse<List<InsufficientStockDTO>> insufficientStockException(InsufficientStockException exception) {
 
-        return new ErrorResponse<>(exception.getMessage(), exception.getInsufficientStock());
+        return new ErrorResponse<>(exception.getMessage(), exception.getInsufficientStockDTOs());
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) // 422

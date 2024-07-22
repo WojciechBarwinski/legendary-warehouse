@@ -7,12 +7,12 @@ import java.util.List;
 
 @Getter
 public class InsufficientStockException extends ApplicationException {
-    private final List<InsufficientStockDTO> insufficientStock;
+    private final List<InsufficientStockDTO> insufficientStockDTOs;
     private final String message;
 
-    public InsufficientStockException(String message, List<InsufficientStockDTO> insufficientStock) {
-        this.message = message;
-        this.insufficientStock = insufficientStock;
+    public InsufficientStockException(List<InsufficientStockDTO> insufficientStockDTOs) {
+        this.message = "There is insufficient stock for some ordered products in our warehouse.";
+        this.insufficientStockDTOs = insufficientStockDTOs;
     }
 
 }

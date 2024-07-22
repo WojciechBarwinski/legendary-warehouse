@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,36 +27,47 @@ public class OrderServiceImpl implements OrderService {
 
     public void proceedOrder(OrderDTO order) {
 
-        checkIfProductsInStockAreAvailable(order);
+        Set<String> collect = order.getOrderLines().stream()
+                .map(OrderLineDTO::productID)
+                .collect(Collectors.toSet());
 
-        removeQuantityOfItemsFromStock(order);
+        List<StockItem> itemsFromDB = stockRepository.findByIdIn(collect);
+
+        checkIfProductsInStockAreAvailable(order, itemsFromDB);
+        removeQuantityOfItemsFromStock(order, itemsFromDB);
     }
 
-    private void checkIfProductsInStockAreAvailable(OrderDTO order) {
+    private void checkIfProductsInStockAreAvailable(OrderDTO order, List<StockItem> itemsFromDB) {
         List<String> missingProducts = new ArrayList<>();
         List<InsufficientStockDTO> insufficientStockProducts = new ArrayList<>();
 
         for (OrderLineDTO orderLine : order.getOrderLines()) {
-            Optional<StockItem> itemFromStock = stockRepository.findById(orderLine.productID());
+
+            Optional<StockItem> itemFromStock = itemsFromDB.stream()
+                    .filter(x -> orderLine.productID().equals(x.getProduct().getId()))
+                    .findFirst();
+
             if (itemFromStock.isEmpty()) {
                 missingProducts.add(orderLine.productID());
-            }
-            else if (itemFromStock.get().getQuantity() < orderLine.quantity()) {
+            } else if (itemFromStock.get().getQuantity() < orderLine.quantity()) {
                 insufficientStockProducts.add(new InsufficientStockDTO(orderLine.productID(), orderLine.quantity(), itemFromStock.get().getQuantity()));
             }
         }
 
         if (!missingProducts.isEmpty()) {
-            throw new ProductNotFoundException("Some of the ordered products are not available in our database.", missingProducts);
+            throw new ProductNotFoundException(missingProducts);
         }
         if (!insufficientStockProducts.isEmpty()) {
-            throw new InsufficientStockException("There is insufficient stock for some ordered products in our warehouse.", insufficientStockProducts);
+            throw new InsufficientStockException(insufficientStockProducts);
         }
     }
 
-    private void removeQuantityOfItemsFromStock(OrderDTO order) {
+    private void removeQuantityOfItemsFromStock(OrderDTO order, List<StockItem> itemsFromDB) {
         for (OrderLineDTO orderLine : order.getOrderLines()) {
-            StockItem stockItem = stockRepository.findById(orderLine.productID()).get();
+
+            StockItem stockItem = itemsFromDB.stream()
+                    .filter(x-> orderLine.productID().equals(x.getProduct().getId()))
+                    .findFirst().get();
 
             int newQuantityInStock = stockItem.getQuantity() - orderLine.quantity();
             stockItem.setQuantity(newQuantityInStock);

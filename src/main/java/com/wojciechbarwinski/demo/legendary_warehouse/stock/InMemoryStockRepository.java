@@ -5,18 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
 @Repository
-public class StockRepositoryImpl implements StockRepository {
+public class InMemoryStockRepository implements StockRepository {
 
     private Map<String, StockItem> productsMap;
 
-    private StockRepositoryImpl() {
+    InMemoryStockRepository() {
         productsMap = new ConcurrentHashMap<>();
         addProductsOnStart();
     }
@@ -38,6 +37,20 @@ public class StockRepositoryImpl implements StockRepository {
     @Override
     public Optional<StockItem> findById(String id) {
         return Optional.ofNullable(productsMap.get(id));
+    }
+
+    @Override
+    public List<StockItem> findByIdIn(Set<String> ids) {
+        List<StockItem> productsFromInMemoryDB = new ArrayList<>();
+
+        for (String id : ids) {
+            StockItem stockItem = productsMap.get(id);
+            if (stockItem != null){
+                productsFromInMemoryDB.add(stockItem);
+            }
+        }
+
+        return productsFromInMemoryDB;
     }
 
     @Override
