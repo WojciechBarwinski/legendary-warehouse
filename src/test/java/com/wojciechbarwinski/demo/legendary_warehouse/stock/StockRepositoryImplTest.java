@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 
 
-class StockRepositoryImplTest {
+class InMemoryStockRepositoryTest {
 
     private StockRepository stockRepository;
 
