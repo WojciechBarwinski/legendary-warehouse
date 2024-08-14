@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/order")
 public class OrderController {
 
 
@@ -23,7 +23,7 @@ public class OrderController {
     private final WebClient webClient;
 
 
-    @PostMapping("/order")
+    @PostMapping("")
     public ResponseEntity<Void> correctOrder(@RequestBody OrderDTO order) {
 
         orderService.proceedOrder(order);
@@ -31,7 +31,7 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/order/shipment")
+    @PostMapping("/shipment")
     public ResponseEntity<String> correctOrder(@RequestBody ShipmentInfo shipmentInfo) {
 
         String url = "http://localhost:8080/shipment";
@@ -43,7 +43,7 @@ public class OrderController {
                 .bodyToMono(String.class)
                 .block();
 
-        return ResponseEntity.ok("Paczka została wysłana do aplikacji B: " + responseBody); //TODO what to return when something goes wrong?
+        return ResponseEntity.ok("Shipment status was send to shop" + responseBody); //TODO what to return when something goes wrong?
     }
 
 }
