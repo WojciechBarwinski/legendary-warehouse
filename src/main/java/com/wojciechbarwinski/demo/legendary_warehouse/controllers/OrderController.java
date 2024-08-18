@@ -5,7 +5,6 @@ import com.wojciechbarwinski.demo.legendary_warehouse.EpicBoarGameShopClient;
 import com.wojciechbarwinski.demo.legendary_warehouse.dtos.OrderDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.dtos.ShipmentInfo;
 import com.wojciechbarwinski.demo.legendary_warehouse.services.OrderService;
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,15 +31,8 @@ public class OrderController {
     }
 
     @PostMapping("/shipment")
-    String shipmentStatusUpdate(@RequestBody ShipmentInfo shipmentInfo) {
+    ResponseEntity<Void> shipmentStatusUpdate(@RequestBody ShipmentInfo shipmentInfo) {
 
-        //TODO to musisz mi chyba bardziej wyjasnić jak to działa i co i jak powinno byc zwracane.
-        // Tutaj wystarczyła by 200 ale czy to ma być string? Jak nie działa to wiem ze leci wyjątek (patrz niżej) ale też widziałem jak jakiś gość wszedzie wrzuca RespondeEntity??
-        // Ale czy wtedy w EBGS musiałbym metodę też ustawiać na ResponseEntity? Czy czasem spring sam tego nie konwertuje?
-        try {
-            return client.updateShipment(shipmentInfo);
-        } catch (FeignException e) {
-            return "Error occurred while updating shipment";
-        }
+        return client.updateShipment(shipmentInfo);
     }
 }
