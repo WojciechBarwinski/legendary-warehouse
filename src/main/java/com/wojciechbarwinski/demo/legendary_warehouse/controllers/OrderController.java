@@ -31,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping("/shipment")
-    ResponseEntity<Void> shipmentStatusUpdate(@RequestBody ShipmentInfo shipmentInfo) {
+    ResponseEntity<Void> updateShipmentStatus(@RequestBody ShipmentInfo shipmentInfo) {
 
         return client.updateShipment(shipmentInfo);
     }
