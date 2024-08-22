@@ -21,7 +21,7 @@ class InMemoryStockRepositoryTest {
     @Test
     public void shouldContainInitialData() {
         //given
-        String existingItemId = "010M";
+        Long existingItemId = 1L;
 
         //when
         Optional<StockItem> itemFromDB = stockRepository.findById(existingItemId);
@@ -34,7 +34,7 @@ class InMemoryStockRepositoryTest {
     @Test
     public void shouldFindByIdWithCorrectId() {
         //given
-        String existingItemId = "010M";
+        Long existingItemId = 1L;
 
         //when
         Optional<StockItem> existingItem = stockRepository.findById(existingItemId);
@@ -47,7 +47,7 @@ class InMemoryStockRepositoryTest {
     @Test
     public void shouldFindByIdWithIncorrectId() {
         //given
-        String nonExistingItemId = "99999";
+        Long nonExistingItemId = 999L;
 
         //when
         Optional<StockItem> nonExistingItem = stockRepository.findById(nonExistingItemId);
@@ -61,7 +61,7 @@ class InMemoryStockRepositoryTest {
     public void shouldSaveStockItemByIdWithDifferentQuantity() {
         //given
         int newQuantity = 3;
-        String orderedProductId = "001B";
+        Long orderedProductId = 1L;
         StockItem itemToSave = new StockItem(new Product(orderedProductId, "Gloomheaven"), newQuantity);
 
         //when
@@ -75,7 +75,7 @@ class InMemoryStockRepositoryTest {
     @Test
     public void shouldFindCorrectStockItemFromSetOfId() {
         //given
-        Set<String> ids = Set.of("001B", "004M", "015X");
+        Set<Long> ids = Set.of(1L, 2L, 999L);
         int expectedSize = 2;
 
         //when

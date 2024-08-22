@@ -1,6 +1,6 @@
 package com.wojciechbarwinski.demo.legendary_warehouse.dtos;
 
 public record ShipmentInfo(
-        String shipmentId,
+        Long orderId,
         ShipmentStatus status
 ) {}

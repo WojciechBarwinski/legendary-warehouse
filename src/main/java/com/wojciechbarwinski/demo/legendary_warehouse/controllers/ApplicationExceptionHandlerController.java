@@ -28,7 +28,7 @@ public class ApplicationExceptionHandlerController {
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) // 422
     @ExceptionHandler(ProductNotFoundException.class)
-    public ErrorResponse<List<String>> productNotFoundException(ProductNotFoundException exception) {
+    public ErrorResponse<List<Long>> productNotFoundException(ProductNotFoundException exception) {
 
         return new ErrorResponse<>(exception.getMessage(), exception.getMissingProducts());
     }

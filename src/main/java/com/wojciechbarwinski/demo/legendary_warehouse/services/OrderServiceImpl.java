@@ -8,6 +8,7 @@ import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.InsufficientSto
 import com.wojciechbarwinski.demo.legendary_warehouse.exceptions.ProductNotFoundException;
 import com.wojciechbarwinski.demo.legendary_warehouse.stock.StockItem;
 import com.wojciechbarwinski.demo.legendary_warehouse.stock.StockRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,18 +18,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final StockRepository stockRepository;
 
-    public OrderServiceImpl(StockRepository stockRepository) {
-        this.stockRepository = stockRepository;
-    }
-
     public void proceedOrder(OrderDTO order) {
 
-        Set<String> collect = order.getOrderLines().stream()
-                .map(OrderLineDTO::productID)
+        Set<Long> collect = order.getOrderLineDTOS().stream()
+                .map(OrderLineDTO::productId)
                 .collect(Collectors.toSet());
 
         List<StockItem> itemsFromDB = stockRepository.findByIdIn(collect);
@@ -38,19 +36,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void checkIfProductsInStockAreAvailable(OrderDTO order, List<StockItem> itemsFromDB) {
-        List<String> missingProducts = new ArrayList<>();
+        List<Long> missingProducts = new ArrayList<>();
         List<InsufficientStockDTO> insufficientStockProducts = new ArrayList<>();
 
-        for (OrderLineDTO orderLine : order.getOrderLines()) {
+        for (OrderLineDTO orderLine : order.getOrderLineDTOS()) {
 
             Optional<StockItem> itemFromStock = itemsFromDB.stream()
-                    .filter(x -> orderLine.productID().equals(x.getProduct().getId()))
+                    .filter(x -> orderLine.productId().equals(x.getProduct().getId()))
                     .findFirst();
 
             if (itemFromStock.isEmpty()) {
-                missingProducts.add(orderLine.productID());
+                missingProducts.add(orderLine.productId());
             } else if (itemFromStock.get().getQuantity() < orderLine.quantity()) {
-                insufficientStockProducts.add(new InsufficientStockDTO(orderLine.productID(), orderLine.quantity(), itemFromStock.get().getQuantity()));
+                insufficientStockProducts.add(new InsufficientStockDTO(orderLine.productId(), orderLine.quantity(), itemFromStock.get().getQuantity()));
             }
         }
 
@@ -63,10 +61,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void removeQuantityOfItemsFromStock(OrderDTO order, List<StockItem> itemsFromDB) {
-        for (OrderLineDTO orderLine : order.getOrderLines()) {
+        for (OrderLineDTO orderLine : order.getOrderLineDTOS()) {
 
             StockItem stockItem = itemsFromDB.stream()
-                    .filter(x-> orderLine.productID().equals(x.getProduct().getId()))
+                    .filter(x-> orderLine.productId().equals(x.getProduct().getId()))
                     .findFirst().get();
 
             int newQuantityInStock = stockItem.getQuantity() - orderLine.quantity();

@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "shipmentClient", url = "${ebgs.shipment.url")
+@FeignClient(name = "shipmentClient", url = "${ebgs.shipment.url}")
 public interface EpicBoarGameShopClient {
 
-    @PostMapping("/shipment")
+    @PostMapping("/order/shipment")
     ResponseEntity<Void> updateShipment(@RequestBody ShipmentInfo shipmentInfo);
 
 }

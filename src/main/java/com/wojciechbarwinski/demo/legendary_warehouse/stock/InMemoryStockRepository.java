@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class InMemoryStockRepository implements StockRepository {
 
-    private Map<String, StockItem> productsMap;
+    private Map<Long, StockItem> productsMap;
 
     InMemoryStockRepository() {
         productsMap = new ConcurrentHashMap<>();
@@ -22,28 +22,28 @@ public class InMemoryStockRepository implements StockRepository {
 
 
     private void addProductsOnStart() {
-        productsMap.put("001B", new StockItem(new Product("001B", "Gloomheaven"), 10));
-        productsMap.put("002B", new StockItem(new Product("002B", "Tainted Grail"), 5));
-        productsMap.put("003M", new StockItem(new Product("003M", "The Old World: Tomb Guards"), 12));
-        productsMap.put("004M", new StockItem(new Product("004M", "The Old World: NeckroSphinx"), 2));
-        productsMap.put("005B", new StockItem(new Product("005B", "Tainted Grail: Last Knight"), 7));
-        productsMap.put("006B", new StockItem(new Product("006B", "Descent: Legend of Darkness"), 1));
-        productsMap.put("007A", new StockItem(new Product("007A", "Red dices set"), 10));
-        productsMap.put("008A", new StockItem(new Product("008A", "Black dices set"), 10));
-        productsMap.put("009A", new StockItem(new Product("009A", "small Paintbrush"), 6));
-        productsMap.put("010M", new StockItem(new Product("010M", "The Old World: Tomb Kings Chariot"), 4));
+        productsMap.put(1L, new StockItem(new Product(1L, "Gloomheaven"), 10));
+        productsMap.put(2L, new StockItem(new Product(2L, "Tainted Grail"), 5));
+        productsMap.put(3L, new StockItem(new Product(3L, "The Old World: Tomb Guards"), 12));
+        productsMap.put(4L, new StockItem(new Product(4L, "The Old World: NeckroSphinx"), 2));
+        productsMap.put(5L, new StockItem(new Product(5L, "Tainted Grail: Last Knight"), 7));
+        productsMap.put(6L, new StockItem(new Product(6L, "Descent: Legend of Darkness"), 1));
+        productsMap.put(7L, new StockItem(new Product(7L, "Red dices set"), 10));
+        productsMap.put(8L, new StockItem(new Product(8L, "Black dices set"), 10));
+        productsMap.put(9L, new StockItem(new Product(9L, "small Paintbrush"), 6));
+        productsMap.put(10L, new StockItem(new Product(10L, "The Old World: Tomb Kings Chariot"), 4));
     }
 
     @Override
-    public Optional<StockItem> findById(String id) {
+    public Optional<StockItem> findById(Long id) {
         return Optional.ofNullable(productsMap.get(id));
     }
 
     @Override
-    public List<StockItem> findByIdIn(Set<String> ids) {
+    public List<StockItem> findByIdIn(Set<Long> ids) {
         List<StockItem> productsFromInMemoryDB = new ArrayList<>();
 
-        for (String id : ids) {
+        for (Long id : ids) {
             StockItem stockItem = productsMap.get(id);
             if (stockItem != null){
                 productsFromInMemoryDB.add(stockItem);
