@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class OrderDTO {
-    private String address;
-    private List<OrderLineDTO> orderLines;
+    private Long id;
+    private AddressDTO addressDTO;
+    private List<OrderLineDTO> orderLineDTOS;
 }

@@ -6,9 +6,9 @@ import java.util.Set;
 
 public interface StockRepository {
 
-    Optional<StockItem> findById(String id);
+    Optional<StockItem> findById(Long id);
 
-    List<StockItem> findByIdIn(Set<String> ids);
+    List<StockItem> findByIdIn(Set<Long> ids);
 
     void save(StockItem stockItem);
 }

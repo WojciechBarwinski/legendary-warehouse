@@ -39,14 +39,14 @@ class OrderServiceImplTest {
     @Test
     void shouldThrowProductNotFoundExceptionWhenProductsDoNotExist() {
         //given
-        String wrongId1 = "111";
-        String wrongId2 = "222";
+        Long wrongId1 = 55L;
+        Long wrongId2 = 66L;
         int unimportantQuantity = 5;
         List<OrderLineDTO> orderLineDTOS = List.of(
                 new OrderLineDTO(wrongId1, unimportantQuantity),
                 new OrderLineDTO(wrongId2, unimportantQuantity)
         );
-        OrderDTO order = new OrderDTO(null, orderLineDTOS);
+        OrderDTO order = new OrderDTO(null, null,  orderLineDTOS);
 
         when(stockRepository.findByIdIn(Set.of(wrongId1, wrongId2))).thenReturn(List.of());
 
@@ -66,16 +66,16 @@ class OrderServiceImplTest {
         int orderQuantity1 = 15;
         int orderQuantity2 = 20;
         int orderQuantity3 = 5;
-        String productId1 = "001B";
-        String productId2 = "002B";
-        String productId3 = "003B";
+        Long productId1 = 1L;
+        Long productId2 = 2L;
+        Long productId3 = 3L;
         List<OrderLineDTO> orderLineDTOS = List.of(
                 new OrderLineDTO(productId1, orderQuantity1),
                 new OrderLineDTO(productId2, orderQuantity2),
                 new OrderLineDTO(productId3, orderQuantity3)
         );
 
-        OrderDTO order = new OrderDTO(null, orderLineDTOS);
+        OrderDTO order = new OrderDTO(null, null, orderLineDTOS);
         StockItem stockItem1 = new StockItem(new Product(productId1, "name1"), 10);
         StockItem stockItem2 = new StockItem(new Product(productId2, "name2"), 10);
         StockItem stockItem3 = new StockItem(new Product(productId3, "name3"), 10);
@@ -95,11 +95,11 @@ class OrderServiceImplTest {
     @Test
     void shouldProceedOrderAndReduceStockQuantity() {
         //given
-        String productID = "001B";
+        Long productID = 1L;
         int quantityFromOrder = 6;
         int expectedQuantityAfterProceedOrder = 4;
         OrderLineDTO orderLine = new OrderLineDTO(productID, quantityFromOrder);
-        OrderDTO order = new OrderDTO(null, List.of(orderLine));
+        OrderDTO order = new OrderDTO(null,null, List.of(orderLine));
         StockItem stockItem = new StockItem(new Product(productID, "Gloomheaven"), 10);
 
         when(stockRepository.findByIdIn(Set.of(productID))).thenReturn(List.of(stockItem));

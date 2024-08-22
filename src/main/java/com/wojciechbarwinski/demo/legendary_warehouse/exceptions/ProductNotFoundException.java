@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 public class ProductNotFoundException extends ApplicationException {
 
-    private final List<String> missingProducts;
+    private final List<Long> missingProducts;
 
-    public ProductNotFoundException(List<String> missingProductList) {
+    public ProductNotFoundException(List<Long> missingProductList) {
         super("Some of the ordered products are not available in our database.");
         this.missingProducts = missingProductList;
     }

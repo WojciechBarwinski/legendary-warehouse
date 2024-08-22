@@ -1,4 +1,4 @@
 package com.wojciechbarwinski.demo.legendary_warehouse.dtos;
 
-public record OrderLineDTO(String productID, Integer quantity) {
+public record OrderLineDTO(Long productId, Integer quantity) {
 }

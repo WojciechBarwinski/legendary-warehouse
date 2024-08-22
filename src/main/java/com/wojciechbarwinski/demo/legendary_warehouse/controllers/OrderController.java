@@ -4,9 +4,9 @@ package com.wojciechbarwinski.demo.legendary_warehouse.controllers;
 import com.wojciechbarwinski.demo.legendary_warehouse.EpicBoarGameShopClient;
 import com.wojciechbarwinski.demo.legendary_warehouse.dtos.OrderDTO;
 import com.wojciechbarwinski.demo.legendary_warehouse.dtos.ShipmentInfo;
+import com.wojciechbarwinski.demo.legendary_warehouse.dtos.ShipmentStatus;
 import com.wojciechbarwinski.demo.legendary_warehouse.services.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +22,12 @@ public class OrderController {
     private final EpicBoarGameShopClient client;
 
 
-    @PostMapping("")
-    public ResponseEntity<Void> proceedOrder(@RequestBody OrderDTO order) {
+    @PostMapping()
+    public ShipmentInfo proceedOrder(@RequestBody OrderDTO order) {
 
         orderService.proceedOrder(order);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ShipmentInfo(order.getId(), ShipmentStatus.RECEIVED_BY_WAREHOUSE);
     }
 
     @PostMapping("/shipment")

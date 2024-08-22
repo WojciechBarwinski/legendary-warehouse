@@ -11,6 +11,6 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class Product {
 
-    private String id;
+    private Long id;
     private String name;
 }
